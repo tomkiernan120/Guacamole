@@ -1,0 +1,13 @@
+{
+    "name": "tom.kiernan/guacamole",
+    "description": "PHP Templating engine",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Tom Kiernan",
+            "email": "tkiernan120@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
