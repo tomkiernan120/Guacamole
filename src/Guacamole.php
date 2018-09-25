@@ -45,9 +45,9 @@ final class Gaucamole {
 
 			if( count( $data ) ){
 				foreach( $data as $key => $value ){
-					$$key = $value;
+					$$key = htmlentities( $value );
 				}
-			unset( $data );
+				unset( $data );
 			}
 
 			ob_start();
