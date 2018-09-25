@@ -35,40 +35,51 @@ final class Gaucamole {
 	public function load( string $template, array $data = array(), $return = null )
 	{
 		
+		$file = false;
+
 		if( $this->fileExists(  $this->templateDirectory.$template.".php" ) ){
-
-			if( count( $this->globals ) ){
-				foreach( $this->globals as $key  => $value) {
-					$$key = $this->clean($value);
-				}
-			}
-
-			if( count( $data ) ){
-				foreach( $data as $key => $value ){
-					$$key = $this->clean( $value );
-				}
-				unset( $data );
-			}
-
-			ob_start();
-
-			require_once $this->templateDirectory.$template.".php";
-			$template = ob_get_contents();
-
-			ob_get_clean();
-
-			if( $return === null ){
-				echo $template;
-			}
-			else {
-				return $template;
-			}
-
+			$file = true;
+		}
+		else if( $template != strip_tags( $template ) ){
+			$file = false;
 		}
 		else {
 			trigger_error( "Could not find file {$this->templateDirectory}{$template}.php", E_USER_ERROR );
 			return false;
 		}
+
+		if( count( $this->globals ) ){
+			foreach( $this->globals as $key  => $value) {
+				$$key = $this->clean($value);
+			}
+		}
+
+		if( count( $data ) ){
+			foreach( $data as $key => $value ){
+				$$key = $this->clean( $value );
+			}
+			unset( $data );
+		}
+
+
+		if( $file ){
+			ob_start();
+			require_once $this->templateDirectory.$template.".php";
+			$template = ob_get_contents();
+			ob_get_clean();
+		}
+
+		if( !$file ){
+			echo eval( $template );
+		}
+		else if( $return === null ){
+			echo $template;
+		}
+		else {
+			return $template;
+		}
+
+
 
 	}
 

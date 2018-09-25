@@ -18,7 +18,10 @@ trait Clean
     }
 
     public function string( string $string ){
-    	return htmlspecialchars( trim( $string ) );
+    	if( $string != strip_tags( $string ) ){
+    		return trim( $tring );
+    	}
+    	return htmlspecialchars( trim($string ) );
     }
 
     public function int( int $int ){
