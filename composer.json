@@ -8,6 +8,11 @@
             "email": "tkiernan120@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Gaucamole\\" : "src/"
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
