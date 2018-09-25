@@ -1,6 +1,6 @@
 {
     "name": "tom.kiernan/guacamole",
-    "description": "PHP Templating engine",
+    "description": "PHP Templating Engine",
     "type": "library",
     "authors": [
         {
@@ -8,6 +8,16 @@
             "email": "tkiernan120@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Gaucamole\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gaucamole\\" : "test/"
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
