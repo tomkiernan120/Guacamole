@@ -1,10 +1,10 @@
 <?php
-namespace Gaucamole\File;
+namespace Gaucamole\Helper;
 
 /**
  * File Helper Functions
  */
-trait FileHelper
+trait File
 {
     /**
      * summary

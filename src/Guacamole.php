@@ -7,7 +7,8 @@ final class Gaucamole {
 	CONST VERSION = "1.0";
 	CONST REV = 1;
 
-	use File\FileHelper;
+	use Helper\File;
+	use Helper\Clean;
 
 	private $templateDirectory;
 	private $options;
@@ -38,14 +39,13 @@ final class Gaucamole {
 
 			if( count( $this->globals ) ){
 				foreach( $this->globals as $key  => $value) {
-					$$key = $value;
+					$$key = $this->clean($value);
 				}
 			}
 
-
 			if( count( $data ) ){
 				foreach( $data as $key => $value ){
-					$$key = htmlentities( $value );
+					$$key = $this->clean( $value );
 				}
 				unset( $data );
 			}
