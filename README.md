@@ -8,7 +8,7 @@ Guacamole is PHP Templating Engine. The purpose of this repo is to create a neat
 * PHP >= 5.4
 
 ## Usage
-
+`$ composer require tom.kiernan/guacamole`
 ```
 
 ## Development
