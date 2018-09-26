@@ -1,5 +1,5 @@
 <?php
-namespace Gaucamole\Util
+namespace Guacamole\Util
 
 /**
  * Debug Class

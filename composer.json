@@ -10,14 +10,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "Gaucamole\\" : "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Gaucamole\\" : "test/"
+            "Guacamole\\" : "src/"
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "paquettg/php-html-parser": "dev-master"
+    }
 }
