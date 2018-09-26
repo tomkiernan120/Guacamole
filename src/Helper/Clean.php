@@ -1,5 +1,5 @@
 <?php
-namespace Gaucamole\Helper;
+namespace Guacamole\Helper;
 
 /**
  * Cleaning Class
@@ -18,10 +18,10 @@ trait Clean
     }
 
     public function string( string $string ){
-    	if( $string != strip_tags( $string ) ){
-    		return trim( $tring );
-    	}
-    	return htmlspecialchars( trim($string ) );
+    	// if( $string != strip_tags( $string ) ){
+    	// 	return trim( $tring );
+    	// }
+    	return htmlspecialchars( trim( $string ), ENT_QUOTES, 'UTF-8' );
     }
 
     public function int( int $int ){

@@ -1,18 +1,20 @@
 <?php
-namespace Gaucamole\Util;
+namespace Guacamole\Util;
 
-class HTMLCollection {
+class HTMLCollection extends \PHPHtmlParser\Dom {
 
 	protected $attributes = array();
 	protected $html;
-	protected $dom;
+	public $dom;
+	protected $tidy;
 
 	protected $css;
 	protected $js;
 	protected $meta;
 
-	public function __construct( array $attributes = array() ){
+	public function __construct( array $attributes = array(), array $tidyoptions = array() ){
 		$this->setAttributes( $attributes );
+		$this->tidyoptions = $tidyoptions;
 	}
 
 	public function setHTML( string $html ){
@@ -36,12 +38,14 @@ class HTMLCollection {
 	public function processHTML( string $html ){
 		$this->setHTML($html);
 		$this->parseHTML();
+		if( $this->dom ){
+			return $this->dom->saveHTML();
+		}
 	}
 
 	public function parseHTML(){
 		if( $this->html ){
-			$this->dom = new \DOMDocument;
-			$this->dom->loadHTML( $this->html );
+			$this->load( $this->getHTML() );
 		}
 	}
 

@@ -1,5 +1,5 @@
 <?php
-namespace Gaucamole\Helper;
+namespace Guacamole\Helper;
 
 /**
  * File Helper Functions

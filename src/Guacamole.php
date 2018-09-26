@@ -1,10 +1,11 @@
 <?php
 
-namespace Gaucamole; 
+namespace Guacamole; 
 
-use Gaucamole\Util\HTMLCollection;
+use Guacamole\Util\HTMLCollection as HTMLCollection;
+use Guacamole\Engine\Renderer as Renderer;
 
-final class Gaucamole {
+class Guacamole {
 
 	CONST VERSION = "1.0";
 
@@ -14,13 +15,18 @@ final class Gaucamole {
 	private $templateDirectory;
 	private $options;
 	public $globals;
-	
+
+	public $root;
+
+	protected $renderer;
+
 	public function __construct( $templateDirectory = null, array $options = array(), array $globals = array() )
 	{
-		$this->setTemplateDirectory( $templateDirectory );
+			$this->setTemplateDirectory( $templateDirectory );
 	    $this->options = $options;
 	    $this->globals = $globals;
 	    $this->HTMLCollection = new HTMLCollection();
+	    $this->renderer = new Renderer( $globals, $this->HTMLCollection );
 	}
 
 	public function setTemplateDirectory( string $templateDirectory = null ){
@@ -57,6 +63,7 @@ final class Gaucamole {
 		}
 		else {
 			$template = $this->HTMLCollection->processHTML( $template );
+			echo eval( addslashes( $template ) );
 		}
 	}
 
@@ -67,9 +74,6 @@ final class Gaucamole {
 
 		if( $this->fileExists(  $this->templateDirectory.$template.".php" ) ){
 			$file = true;
-		}
-		else if( $template != strip_tags( $template ) ){
-			$file = false;
 		}
 		else {
 			trigger_error( "Could not find file {$this->templateDirectory}{$template}.php", E_USER_ERROR );
@@ -90,22 +94,16 @@ final class Gaucamole {
 		}
 
 
-		if( $file ){
-			ob_start();
-			require_once $this->templateDirectory.$template.".php";
-			$template = ob_get_contents();
-			ob_get_clean();
-		}
+		ob_start();
+		require_once $this->templateDirectory.$template.".php";
+		$template = $this->renderer->process( ob_get_contents() );
+		ob_get_clean();
 
-		if( !$file ){
-			echo eval( $template );
-		}
-		else if( $return === null ){
+		if( $return === null ){
 			echo $template;
+			return;
 		}
-		else {
-			return $template;
-		}
+		return $template;
 
 	}
 
