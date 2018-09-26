@@ -5,6 +5,11 @@ class HTMLCollection {
 
 	protected $attributes = array();
 	protected $html;
+	protected $dom;
+
+	protected $css;
+	protected $js;
+	protected $meta;
 
 	public function __construct( array $attributes = array() ){
 		$this->setAttributes( $attributes );
@@ -30,8 +35,14 @@ class HTMLCollection {
 
 	public function processHTML( string $html ){
 		$this->setHTML($html);
+		$this->parseHTML();
+	}
 
-		
+	public function parseHTML(){
+		if( $this->html ){
+			$this->dom = new \DOMDocument;
+			$this->dom->loadHTML( $this->html );
+		}
 	}
 
 

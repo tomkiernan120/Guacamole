@@ -14,12 +14,7 @@ final class Gaucamole {
 	private $templateDirectory;
 	private $options;
 	public $globals;
-
-	/**
-	 * @param string/null
-	 * @param array
-	 * @param array
-	 */
+	
 	public function __construct( $templateDirectory = null, array $options = array(), array $globals = array() )
 	{
 		$this->setTemplateDirectory( $templateDirectory );
@@ -45,12 +40,12 @@ final class Gaucamole {
 		return $this->options;
 	}
 
-	public function setGlobals( array $globals = array() ){
+	public function setGlobals( array $globals = array() ) {
 		$this->globals = $globals;
 		return $this;
 	}
 
-	public function getGlobals(){
+	public function getGlobals() {
 		return $this->globals;
 	}
 
@@ -111,8 +106,6 @@ final class Gaucamole {
 		else {
 			return $template;
 		}
-
-
 
 	}
 
