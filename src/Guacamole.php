@@ -113,5 +113,10 @@ class Guacamole
         return file_get_contents( $path . "." . $ext );
     }
 
+    public function clean( $var )
+    {
+        $type = gettype( $var );
+        return self:{$type}( $var );
+    }
 
 }
