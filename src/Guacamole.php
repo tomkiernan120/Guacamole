@@ -1,110 +1,103 @@
 <?php
+namespace Guacamole;
 
-namespace Guacamole; 
+/**
+ * Guacamole Object
+ */
+class Guacamole
+{
 
-use Guacamole\Util\HTMLCollection as HTMLCollection;
-use Guacamole\Engine\Renderer as Renderer;
+    private $tags = array();
 
-class Guacamole {
+    /**
+     * Guacamole Cons
+     */
+    public function __construct( array $config = null )
+    {
 
-	CONST VERSION = "1.0";
+    }
 
-	use Helper\File;
-	use Helper\Clean;
+    public function setTags( $tags )
+    {
+        if( is_array( $tags ) && !empty( $tags ) ){
+            foreach( $tags as $tk => $tv ){
+                $this->tags[ strtolower( $tk ) ] = $tv;
+            }
+        }
+    }
 
-	private $templateDirectory;
-	private $options;
-	public $globals;
+    public function setTag( string $tag, mixed $params = null )
+    {
+        $this->tags[$tag] = $params;
+    }
 
-	public $root;
+    public function getTags() :array
+    {
+        return $this->tags;
+    }
 
-	protected $renderer;
+    public function getTag( string $tag ){
+        return $this->tags[$tag];
+    }
 
-	public function __construct( $templateDirectory = null, array $options = array(), array $globals = array() )
-	{
-			$this->setTemplateDirectory( $templateDirectory );
-	    $this->options = $options;
-	    $this->globals = $globals;
-	    $this->HTMLCollection = new HTMLCollection();
-	    $this->renderer = new Renderer( $globals, $this->HTMLCollection );
-	}
+    public function proccessTag() :string
+    {
 
-	public function setTemplateDirectory( string $templateDirectory = null ){
-		$this->templateDirectory = $templateDirectory;		
-	}
+    }
 
-	public function getTemplateDirectory(){
-		return $this->templateDirectory;
-	}
+    public function process( string $template ) :string
+    {
 
-	public function setOptions( array $options = array() ){
-		$this->options = $options;
-		return $this;
-	}
+        if( !empty( $this->tags ) ){
 
-	public function getOptions(){
-		return $this->options;
-	}
+            $tags = $this->getTags();
 
-	public function setGlobals( array $globals = array() ) {
-		$this->globals = $globals;
-		return $this;
-	}
+            foreach( $tags as $tk => $tv ){
 
-	public function getGlobals() {
-		return $this->globals;
-	}
+                if( false !== stripos( $template , "<{$tk}>" ) ){
 
+                    if( is_string( trim( $tv ) ) ){
+                        $template = str_ireplace( "<{$tk}>", $tv,  $template );
+                    }
 
-	public function process( string $template, $data = array(), $return = null )
-	{
-		if( $this->fileExists( $this->getTemplateDirectory().$template.".php" ) ){
-			$this->load( $template, $data, $return );
-		}
-		else {
-			$template = $this->HTMLCollection->processHTML( $template );
-			echo eval( addslashes( $template ) );
-		}
-	}
+                }
 
-	public function load( string $template, array $data = array(), $return = null )
-	{
-		
-		$file = false;
-
-		if( $this->fileExists(  $this->templateDirectory.$template.".php" ) ){
-			$file = true;
-		}
-		else {
-			trigger_error( "Could not find file {$this->templateDirectory}{$template}.php", E_USER_ERROR );
-			return false;
-		}
-
-		if( count( $this->globals ) ){
-			foreach( $this->globals as $key  => $value) {
-				$$key = $this->clean($value);
-			}
-		}
-
-		if( count( $data ) ){
-			foreach( $data as $key => $value ){
-				$$key = $this->clean( $value );
-			}
-			unset( $data );
-		}
+            }
 
 
-		ob_start();
-		require_once $this->templateDirectory.$template.".php";
-		$template = $this->renderer->process( ob_get_contents() );
-		ob_get_clean();
+        }
 
-		if( $return === null ){
-			echo $template;
-			return;
-		}
-		return $template;
+        return $template;
+    }
 
-	}
+    public function render( string $templateString, $params = null ) : string
+    {
+
+        if( is_array( $params ) && !empty( $params ) ){
+            if( isset( $params["tags"] ) ){
+                $this->setTags( $params["tags"] );
+            }
+        }
+
+
+        if( $this->fileExists( $templateString ) ){
+            $templateString = $this->getFileContets( $templateString );
+        }
+
+
+        $template = $this->process( $templateString );
+
+        return $template;
+    }
+
+    public function fileExists( string $path, string $ext = "php" ) : bool
+    {
+        return (bool) file_exists( $path . "." . $ext );
+    }
+
+    public function getFileContets( $path, $ext = "php" ){
+        return file_get_contents( $path . "." . $ext );
+    }
+
 
 }
