@@ -60,14 +60,26 @@ class Guacamole
 
     public function proccessTag( $tag, $params = null )
     {   
-        if( strpos( $tag, "|" ) !== false ){
 
-        }
+        $params = $this->clean( $params );
 
         if( false !== stripos( $this->getTemplate(), "<{$tag}>" ) ){
 
             if( is_string( $params ) ){
                 $this->setTemplate( str_ireplace( "<{$tag}>", trim($params),  $this->getTemplate() ) );
+            }
+            else if( is_array( $params ) && !empty( $params ) ){
+
+                if( isset( $params["function"] ) && is_callable( $params["function"] ) ){
+                    $this->setTemplate( str_ireplace( "<{$tag}>", call_user_func_array( $params["function"], @$params["params"] ), $this->getTemplate() ) );
+                }
+
+                if( isset( $params["controller"] ) && isset( $params["method"] ) ){
+                    if( class_exists( $params["controller"] ) && $con = new $params["controller"] && method_exists( $con, $params["method"] ) ){
+                        $this->setTemplate( str_replace( "<{$tag}>", $con->{$params["method"]}( @$params["passin"] ), $this->getTemplate() ) );
+                    }
+                }
+
             }
             else if( is_callable( $params ) ){
 
@@ -76,7 +88,6 @@ class Guacamole
             else {
                 $this->setTemplate( str_ireplace( "<{$tag}>", "",  $this->getTemplate() ) );
             }
-
         }
     }
 
@@ -126,10 +137,27 @@ class Guacamole
 
     public function clean( $var )
     {
+
+        if( is_array( $var ) && !empty( $var ) ){
+            foreach( $var as $key => $value ){
+                $var[$key] = $this->clean( $value );
+            }
+        }
+
         $type = gettype( $var );
+        if( method_exists( $this, $type ) ){
+            return self::{$type}( $var );
+        }
+        else {
+            return $var;
+        }
         return self::{$type}( $var );
     }
 
-    public function tes
+    public static function text( $variable ){
+        return trim( str_replace( "\n", "", htmlspecialchars( strip_tags( trim( $variable ) ), ENT_QUOTES, "UTF-8" ) ) );
+    }
+
+
 
 }
