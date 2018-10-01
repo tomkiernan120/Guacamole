@@ -8,6 +8,7 @@ class Guacamole
 {
 
     private $tags = array();
+    private $template;
 
     /**
      * Guacamole Cons
@@ -40,34 +41,46 @@ class Guacamole
         return $this->tags[$tag];
     }
 
-    public function proccessTag() :string
+    public function getTemplate() :string
     {
-
+        return $this->template;
     }
 
-    public function process( string $template ) :string
+    public function setTemplate( string $template )
     {
+        $this->template = $template;
+        return $this;
+    }
 
-        if( !empty( $this->tags ) ){
+    public function proccessTag( $tag, $params = null )
+    {
+        if( false !== stripos( $this->getTemplate(), "<{$tag}>" ) ){
 
-            $tags = $this->getTags();
-
-            foreach( $tags as $tk => $tv ){
-
-                if( false !== stripos( $template , "<{$tk}>" ) ){
-
-                    if( is_string( trim( $tv ) ) ){
-                        $template = str_ireplace( "<{$tk}>", $tv,  $template );
-                    }
-
-                }
-
+            if( is_string( $params ) ){
+                $this->setTemplate( str_ireplace( "<{$tag}>", trim($params),  $this->getTemplate() ) );
+            }
+            else if( is_callable( $params ) ){
+                $this->setTemplate( str_ireplace( "<{$tag}>", call_user_func_array( $params , $params_arr = array() ), $this->getTemplate() ) );
+            }
+            else {
+                $this->setTemplate( str_ireplace( "<{$tag}>", "",  $this->getTemplate() ) );
             }
 
+        }
+    }
+
+    public function process() :void
+    {
+
+        if( !empty( $this->tags )  ){
+
+            $tags = $this->getTags();
+            foreach( $tags as $tk => $tv ){
+                $this->proccessTag( $tk, $tv );
+            }
 
         }
 
-        return $template;
     }
 
     public function render( string $templateString, $params = null ) : string
@@ -84,10 +97,11 @@ class Guacamole
             $templateString = $this->getFileContets( $templateString );
         }
 
+        $this->setTemplate( $templateString );
 
-        $template = $this->process( $templateString );
+        $this->process();
 
-        return $template;
+        return $this->getTemplate();
     }
 
     public function fileExists( string $path, string $ext = "php" ) : bool
