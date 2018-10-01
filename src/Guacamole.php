@@ -9,13 +9,14 @@ class Guacamole
 
     private $tags = array();
     private $template;
+    private $config;
 
     /**
      * Guacamole Cons
      */
     public function __construct( array $config = null )
     {
-
+        $this->setConfig( $config );
     }
 
     /**
@@ -28,14 +29,22 @@ class Guacamole
     {
         if( is_array( $tags ) && !empty( $tags ) ){
             foreach( $tags as $tk => $tv ){
-                $this->tags[ strtolower( $tk ) ] = $tv;
+                $this->setTag( $tk, $tv );
             }
         }
     }
 
-    public function setTag( string $tag, mixed $params = null )
+    public function setConfig( array $config ){
+        $this->config = $config;
+    }
+
+    public function getConfig(){
+        return $this->config;
+    }
+
+    public function setTag( string $tag, $params = null )
     {
-        $this->tags[$tag] = $params;
+        $this->tags[ strtolower( $tag )] = $params;
     }
 
     public function getTags() :array
