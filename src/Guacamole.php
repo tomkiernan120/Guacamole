@@ -18,7 +18,13 @@ class Guacamole
 
     }
 
-    public function setTags( $tags )
+    /**
+     * set the tags propery ( used to make parts of the template )
+     * @param array $tags array of tags array( string "key" => mixed params );
+     * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
+     * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
+     */
+    public function setTags( array $tags )
     {
         if( is_array( $tags ) && !empty( $tags ) ){
             foreach( $tags as $tk => $tv ){
@@ -53,13 +59,18 @@ class Guacamole
     }
 
     public function proccessTag( $tag, $params = null )
-    {
+    {   
+        if( strpos( $tag, "|" ) !== false ){
+
+        }
+
         if( false !== stripos( $this->getTemplate(), "<{$tag}>" ) ){
 
             if( is_string( $params ) ){
                 $this->setTemplate( str_ireplace( "<{$tag}>", trim($params),  $this->getTemplate() ) );
             }
             else if( is_callable( $params ) ){
+
                 $this->setTemplate( str_ireplace( "<{$tag}>", call_user_func_array( $params , $params_arr = array() ), $this->getTemplate() ) );
             }
             else {
@@ -116,7 +127,9 @@ class Guacamole
     public function clean( $var )
     {
         $type = gettype( $var );
-        return self:{$type}( $var );
+        return self::{$type}( $var );
     }
+
+    public function tes
 
 }
