@@ -1,16 +1,25 @@
 <?php
 namespace Guacamole;
 
+use Guacamole\Clean as Clean;
+use Guacamole\Util as Util;
+
+use Guacamole\Tag\Tag as Tag;
+use Guacamole\Template\Template as Template;
+
+
 /**
  * Guacamole Object
  */
 class Guacamole
 {
 
-    private $tags = array();
-    private $template;
     private $config;
     private $templateDirectory = "/templates/";
+
+
+    public $tag;
+    public $template;
 
     /**
      * Guacamole Cons
@@ -18,29 +27,26 @@ class Guacamole
     public function __construct( array $config = array() )
     {
         $this->setConfig( $config );
+        $this->tag = isset( $this->tag ) ?: new Tag( $this );
+        $this->template = isset( $this->template ) ?: new Template( $this );
     }
 
     /**
-     * set the tags propery ( used to make parts of the template )
-     * @param array $tags array of tags array( string "key" => mixed params );
-     * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
-     * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
+     * [setConfig description]
+     * @param array $config [description]
      */
-    public function setTags( array $tags )
-    {
-        if( is_array( $tags ) && !empty( $tags ) ){
-            foreach( $tags as $tk => $tv ){
-                $this->setTag( $tk, $tv );
-            }
-        }
-    }
-
-    public function setConfig( array $config )
+    public function setConfig( array $config ) :void
     {
         $this->config = $config;
     }
 
-    public function getConfig( $name = null ){
+    /**
+     * [getConfig description]
+     * @param  [type] $name [description]
+     * @return [type]       [description]
+     */
+    public function getConfig( $name = null )
+    {
         if( !$name ){
             return $this->config;
         }
@@ -49,150 +55,34 @@ class Guacamole
         }
     }
 
-    public function setTag( string $tag, $params = null )
-    {
-        $this->tags[ strtolower( $tag )] = $params;
-    }
-
     /**
-     * addTag Alias for set tag
-     * @param string $tag    is string for custom tag
-     * @param string/array $params optional string/array/object/closure
+     * [render description]
+     * @param  string $templateString [description]
+     * @param  [type] $params         [description]
+     * @return [type]                 [description]
      */
-    public function addTag( string $tag, $params = null )
+    public function render( string $templateString, $params = null ) 
     {
-        $this->setTag( $tag, $params );
-    }
-
-    public function getTags() :array
-    {
-        return $this->tags;
-    }
-
-    public function getTag( string $tag ){
-        return $this->tags[$tag];
-    }
-
-    public function getTemplate() :string
-    {
-        return $this->template;
-    }
-
-    public function setTemplate( string $template )
-    {
-        $this->template = $template;
-        return $this;
-    }
-
-    public function proccessTag( $tag, $params = null ) // TODO: move params check to be a bit more intuitive
-    {   
-
-        $params = $this->clean( $params );
-
-        if( false !== stripos( $this->getTemplate(), "<{$tag}>" ) ){
-
-            if( is_string( $params ) ){
-                $this->setTemplate( str_ireplace( "<{$tag}>", trim($params),  $this->getTemplate() ) );
-                return;
-            }
-            else if( is_array( $params ) && !empty( $params ) ){
-
-                if( isset( $params["function"] ) && is_callable( $params["function"] ) ){
-                    $this->setTemplate( str_ireplace( "<{$tag}>", call_user_func_array( $params["function"], @$params["params"] ), $this->getTemplate() ) );
-                    return;
-                }
-
-                if( isset( $params["controller"] ) && isset( $params["method"] ) ){
-
-                    if( class_exists( $params["controller"] ) ){
-                        $con = new $params["controller"];
-
-                        if( method_exists( $con, $params["method"] ) ){
-                            $this->setTemplate( str_replace( "<{$tag}>", $con->{$params["method"]}( @$params["passin"] ), $this->getTemplate() ) );
-                            return;
-                        }
-                    }
-                }
-
-            }
-            else if( is_callable( $params ) ){
-                $this->setTemplate( str_ireplace( "<{$tag}>", call_user_func_array( $params , $params_arr = array() ), $this->getTemplate() ) );
-                return;
-            }
-            else {
-                $this->setTemplate( str_ireplace( "<{$tag}>", "",  $this->getTemplate() ) );
-                return;
-            }
-        }
-    }
-
-    public function process() :void
-    {
-
-        if( !empty( $this->tags )  ){
-
-            $tags = $this->getTags();
-            foreach( $tags as $tk => $tv ){
-                $this->proccessTag( $tk, $tv );
-            }
-
-        }
-
-    }
-
-    public function render( string $templateString, $params = null ) : string
-    {
-
         if( is_array( $params ) && !empty( $params ) ){
             if( isset( $params["tags"] ) ){
-                $this->setTags( $params["tags"] );
+                $this->tag->setTags( $params["tags"] );
             }
         }
 
-
-        if( $this->fileExists( $templateString ) ){
-            $templateString = $this->getFileContets( $templateString );
-        }
-
-        $this->setTemplate( $templateString );
-
-        $this->process();
-
-        return $this->getTemplate();
-    }
-
-    public function fileExists( string $path, string $ext = "php" ) : bool
-    {
-        return (bool) file_exists( $path . "." . $ext );
-    }
-
-    public function getFileContets( $path, $ext = "php" ){
-        return file_get_contents( $path . "." . $ext );
-    }
-
-    public function clean( $var )
-    {
-
-        if( is_array( $var ) && !empty( $var ) ){
-            foreach( $var as $key => $value ){
-                $var[$key] = $this->clean( $value );
-            }
-        }
-
-        $type = gettype( $var );
-        if( method_exists( $this, $type ) ){
-            return self::{$type}( $var );
+        if( Util::fileExists( $templateString ) ){
+            $templateString = Util::getFileContents( $templateString );
+            $this->template->setTemplate( $templateString );
         }
         else {
-            return $var;
+            $this->template->setTemplate( $templateString );
         }
-        return self::{$type}( $var );
+
+        $this->tag->process();
+
+
+        error_log( $this->template->getTemplate() );
+
+        return $this->template->getTemplate();
     }
-
-    public static function text( $variable ){
-        return trim( str_replace( "\n", "", htmlspecialchars( strip_tags( trim( $variable ) ), ENT_QUOTES, "UTF-8" ) ) );
-    }
-
-
 
 }
