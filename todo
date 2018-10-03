@@ -1,0 +1,8 @@
+improve and enhance templating - possibly call it statically
+
+
+group templates by folder
+
+share data across templates
+
+assign data to templates as well as pass through
