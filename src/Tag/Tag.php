@@ -108,6 +108,15 @@ class Tag
       $params = Clean::clean( $params );
 
       if( $this->tagExists( $tag ) ){
+        
+          if( isset( $params["path"] ) && Util::fileExists( $params["path"].$tag ) ){
+            
+            ob_start();
+            require "{$params["path"]}{$tag}.php";
+            $string = ob_get_clean();
+            $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $string ), $this->guacamole->template->getTemplate() ) );
+            return;
+          }        
 
           if( Util::isString( $params ) ){
               $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $params ),  $this->guacamole->template->getTemplate() ) );

@@ -70,18 +70,17 @@ class Guacamole
         }
 
         if( Util::fileExists( $templateString ) ){
-            $templateString = Util::getFileContents( $templateString );
-            $this->template->setTemplate( $templateString );
+            // $templateString = Util::getFileContents( $templateString );
+            ob_start();
+            require $templateString . ".php";
+            $templateString = ob_get_clean();
+            $this->template->setTemplate( $templateString );        
         }
         else {
             $this->template->setTemplate( $templateString );
         }
 
         $this->tag->process();
-
-
-        error_log( $this->template->getTemplate() );
-
         return $this->template->getTemplate();
     }
 
