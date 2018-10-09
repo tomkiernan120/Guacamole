@@ -22,7 +22,8 @@ class Guacamole
     public $template;
 
     /**
-     * Guacamole Cons
+     * [__construct description]
+     * @param array $config config settings for Guacamole;
      */
     public function __construct( array $config = array() )
     {
@@ -32,8 +33,8 @@ class Guacamole
     }
 
     /**
-     * [setConfig description]
-     * @param array $config [description]
+     * config setter
+     * @param array $config array of config options
      */
     public function setConfig( array $config ) :void
     {
@@ -41,9 +42,9 @@ class Guacamole
     }
 
     /**
-     * [getConfig description]
-     * @param  [type] $name [description]
-     * @return [type]       [description]
+     * config getter
+     * @param  mixed $name Optional name parameter can be used to return one config setting
+     * @return mixed       returns whole config array or singular config option
      */
     public function getConfig( $name = null )
     {
@@ -56,12 +57,12 @@ class Guacamole
     }
 
     /**
-     * [render description]
-     * @param  string $templateString [description]
-     * @param  [type] $params         [description]
-     * @return [type]                 [description]
+     * Render a template
+     * @param  string $templateString  A template string to render
+     * @param  array $params           optional array of parameters to pass through with the template
+     * @return string                  return the template string after render and processs
      */
-    public function render( string $templateString, $params = null ) 
+    public function render( string $templateString, $params = null ) :string
     {
         if( is_array( $params ) && !empty( $params ) ){
             if( isset( $params["tags"] ) ){

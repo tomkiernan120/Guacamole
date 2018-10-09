@@ -1,44 +1,40 @@
 <?php
 
-namespace Guacamole;
+namespace Guacamole\Template;
+
 
 /**
  * summary
  */
-class Clean
+class Template
 {
+    public $template;
+    public $guacamole;
 
     /**
-     * [clean description]
-     * @param  [type] $var [description]
-     * @return [type]      [description]
+     * summary
      */
-      public static function clean( $var )
-      {
+    public function __construct( \Guacamole\Guacamole $guacamole )
+    {
+      $this->guacamole = $guacamole;
+    }
 
-          if( is_array( $var ) && !empty( $var ) ){
-              foreach( $var as $key => $value ){
-                  $var[$key] = self::clean( $value );
-              }
-          }
+    /**
+     * [getTemplate description]
+     * @return [type] [description]
+     */
+    public function getTemplate() :string
+    {
+      return (string)$this->template;
+    }
 
-          $type = gettype( $var );
-          if( method_exists( __CLASS__, $type ) ){
-              return self::{$type}( $var );
-          }
-          else {
-              return $var;
-          }
-          return self::{$type}( $var );
-      }
-
-      /**
-       * [text description]
-       * @param  [type] $variable [description]
-       * @return [type]           [description]
-       */
-    public static function text( $variable ){
-        return trim( str_replace( "\n", "", htmlspecialchars( strip_tags( trim( $variable ) ), ENT_QUOTES, "UTF-8" ) ) );
+    /**
+     * [setTemplate description]
+     * @param string $template [description]
+     */
+    public function setTemplate( string $template ) :string
+    {
+        return $this->template = $template;
     }
 
 }

@@ -16,31 +16,34 @@ class Util
     }
 
     /**
-     * [fileExists description]
-     * @param  string $path [description]
-     * @param  string $ext  [description]
-     * @return [type]       [description]
+     * Check if file exists
+     * @param  string $path path to file will accept relative paths
+     * @param  string $ext  optional extension does assume file is php
+     * @return bool       [description]
      */
-    public static function fileExists( string $path,  string $ext = "php" )
+    public static function fileExists( string $path,  string $ext = "php" ) : bool
     {
       return (bool)file_exists( $path . "." . $ext );
     }
 
     /**
-     * [getFileContents description]
-     * @param  string $path [description]
-     * @param  string $ext  [description]
-     * @return [type]       [description]
+     * Get the contents of a file
+     * @param  string $path path to file will accept relative paths
+     * @param  string $ext  optional extension does assume file is php
+     * @return mixed        returns files contents or false if file not found;
      */
     public static function getFileContents( string $path, string $ext = "php" )
     {
-        return file_get_contents( "{$path}.{$ext}" ); 
+        if( self::fileExists( $path, $ext ) ){
+            return file_get_contents( "{$path}.{$ext}" ); 
+        }
+        return false;
     }
 
     /**
-     * [isString description]
-     * @param  [type]  $variable [description]
-     * @return boolean           [description]
+     * check if variable is a string
+     * @param  mixed  $variable  mixed variable to check
+     * @return boolean           returns boolean
      */
     public static function isString( $variable ) :bool
     {
@@ -48,15 +51,22 @@ class Util
     }
 
     /**
-     * [isArray description]
-     * @param  [type]  $variable [description]
-     * @return boolean           [description]
+     * check if variable is array
+     * @param  miaxed  $variable  mixed variable to check
+     * @return boolean            returns boolean
      */
     public static function isArray( $variable ) :bool
     {
         return (bool)is_array( $variable );
     }
 
+    /**
+     * find a file in directorty
+     * @param  string $file      file name
+     * @param  string $directory directory path defaults to current working directory
+     * @return string            if fount returns string path to file else return false
+     * @example Util::findFile( 'Tag.php' ); //output './Tag/Tag.php'
+     */
     public static function findFile( string $file, $directory = "." )
     {
         $files = scandir( $directory );
@@ -73,6 +83,7 @@ class Util
                 self::findFile( $file, $path );
             }
         }
+        return false;
     }
 
 }
