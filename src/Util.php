@@ -34,7 +34,7 @@ class Util
      */
     public static function getFileContents( string $path, string $ext = "php" )
     {
-    	return file_get_contents( "{$path}.{$ext}" ); 
+        return file_get_contents( "{$path}.{$ext}" ); 
     }
 
     /**
@@ -44,7 +44,7 @@ class Util
      */
     public static function isString( $variable ) :bool
     {
-    	return (bool)is_string( $variable );
+        return (bool)is_string( $variable );
     }
 
     /**
@@ -54,25 +54,25 @@ class Util
      */
     public static function isArray( $variable ) :bool
     {
-    	return (bool)is_array( $variable );
+        return (bool)is_array( $variable );
     }
 
     public static function findFile( string $file, $directory = "." )
     {
-    	$files = scandir( $directory );
+        $files = scandir( $directory );
 
-    	foreach( $files as $key => $value ){
-    		$path = realpath( $directory.DIRECTORY_SEPARATOR.$value );
+        foreach( $files as $key => $value ){
+            $path = realpath( $directory.DIRECTORY_SEPARATOR.$value );
 
-    		if( !is_dir( $path ) ){
-    			if( $file == $value ){
-    				return $path;
-    			}
-    		} 
-    		else if( $value != "." && $value != ".." ){
-    			self::findFile( $file, $path );
-    		}
-    	}
+            if( !is_dir( $path ) ){
+                if( $file == $value ){
+                    return $path;
+                }
+            } 
+            else if( $value != "." && $value != ".." ){
+                self::findFile( $file, $path );
+            }
+        }
     }
 
 }
