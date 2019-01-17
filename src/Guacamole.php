@@ -36,7 +36,7 @@ class Guacamole
      * config setter
      * @param array $config array of config options
      */
-    public function setConfig( array $config )
+    public function setConfig( $config )
     {
         $this->config = $config;
     }
