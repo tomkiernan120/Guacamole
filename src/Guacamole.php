@@ -36,7 +36,7 @@ class Guacamole
      * config setter
      * @param array $config array of config options
      */
-    public function setConfig( array $config ) :void
+    public function setConfig( array $config )
     {
         $this->config = $config;
     }
@@ -62,7 +62,7 @@ class Guacamole
      * @param  array $params           optional array of parameters to pass through with the template
      * @return string                  return the template string after render and processs
      */
-    public function render( string $templateString, $params = null ) :string
+    public function render( string $templateString, $params = null )
     {
         if( is_array( $params ) && !empty( $params ) ){
             if( isset( $params["tags"] ) ){

@@ -21,7 +21,7 @@ class Tag
   /**
    * summary
    */
-  public function __construct( \Guacamole\Guacamole $Guacamole )
+  public function __construct( $Guacamole )
   {
      $this->guacamole = $Guacamole;
   }
@@ -31,7 +31,7 @@ class Tag
    * @param string $tag    [description]
    * @param [type] $params [description]
    */
-  public function setTag( string $tag, $params = null ): void
+  public function setTag( string $tag, $params = null )
   {
     $this->tags[ strtolower( $tag )] = $params;
   }
@@ -57,7 +57,7 @@ class Tag
    * @param string $tag    is string for custom tag
    * @param string/array $params optional string/array/object/closure
    */
-  public function addTag( string $tag, $params = null ) :void
+  public function addTag( string $tag, $params = null )
   {
       $this->setTag( $tag, $params );
   }
@@ -76,7 +76,7 @@ class Tag
    * @param  string $tag [description]
    * @return [type]      [description]
    */
-  public function getTag( string $tag ) :string
+  public function getTag( string $tag )
   {
       return $this->tags[$tag];
   }
@@ -87,7 +87,7 @@ class Tag
    * @param  [type] $template [description]
    * @return [type]           [description]
    */
-  public function tagExists( string $tag, $template = null ) :bool
+  public function tagExists( string $tag, $template = null )
   {
     if( !$template  && $this->guacamole->template->getTemplate() ){
       $template = $this->guacamole->template->getTemplate();
@@ -134,7 +134,7 @@ class Tag
    * [process description]
    * @return [type] [description]
    */
-  public function process() :void
+  public function process()
   {   
       if( !empty( $this->tags )  ){
 
@@ -145,14 +145,14 @@ class Tag
       }
   }
 
-  public function processString( string $string )
+  public function processString( $string )
   {
     if( Util::isString( $string ) ){
         $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $params ),  $this->guacamole->template->getTemplate() ) );
     }
   }
 
-  public function processArray( array $array )
+  public function processArray( $array )
   {
     $data = array();
     $returnData = array();
