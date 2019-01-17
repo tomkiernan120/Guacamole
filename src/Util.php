@@ -67,7 +67,7 @@ class Util
      * @return string            if fount returns string path to file else return false
      * @example Util::findFile( 'Tag.php' ); //output './Tag/Tag.php'
      */
-    public static function findFile( string $file, $directory = "." )
+    public static function findFile( $file, $directory = "." )
     {
         $files = scandir( $directory );
 

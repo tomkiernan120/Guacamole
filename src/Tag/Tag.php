@@ -31,7 +31,7 @@ class Tag
    * @param string $tag    [description]
    * @param [type] $params [description]
    */
-  public function setTag( string $tag, $params = null )
+  public function setTag( $tag, $params = null )
   {
     $this->tags[ strtolower( $tag )] = $params;
   }
@@ -43,7 +43,7 @@ class Tag
   * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
   * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
   */
-  public function setTags( array $tags )
+  public function setTags( $tags )
   {
     if( is_array( $tags ) && !empty( $tags ) ){
         foreach( $tags as $tk => $tv ){
@@ -57,7 +57,7 @@ class Tag
    * @param string $tag    is string for custom tag
    * @param string/array $params optional string/array/object/closure
    */
-  public function addTag( string $tag, $params = null )
+  public function addTag( $tag, $params = null )
   {
       $this->setTag( $tag, $params );
   }
@@ -76,7 +76,7 @@ class Tag
    * @param  string $tag [description]
    * @return [type]      [description]
    */
-  public function getTag( string $tag )
+  public function getTag( $tag )
   {
       return $this->tags[$tag];
   }
@@ -87,7 +87,7 @@ class Tag
    * @param  [type] $template [description]
    * @return [type]           [description]
    */
-  public function tagExists( string $tag, $template = null )
+  public function tagExists( $tag, $template = null )
   {
     if( !$template  && $this->guacamole->template->getTemplate() ){
       $template = $this->guacamole->template->getTemplate();
