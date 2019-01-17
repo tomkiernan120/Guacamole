@@ -43,7 +43,7 @@ class Tag
   * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
   * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
   */
-  public function setTags( array $tags ) : void
+  public function setTags( array $tags )
   {
     if( is_array( $tags ) && !empty( $tags ) ){
         foreach( $tags as $tk => $tv ){
@@ -66,7 +66,7 @@ class Tag
    * [getTags description]
    * @return [type] [description]
    */
-  public function getTags() :array
+  public function getTags()
   {
       return $this->tags;
   }
