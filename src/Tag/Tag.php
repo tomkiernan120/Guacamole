@@ -119,8 +119,21 @@ class Tag
             $data = $this->processArray( $params );
           }
 
-          if( isset( $params["path"] ) && Util::fileExists( $params["path"].$tag ) ){
+          if( isset( $params["path"] ) && Util::fileExists( $params["path"].$tag ) ) {
             ob_start();
+
+            if( isset( $params["controller"] ) && class_exists( $params["controller"] ) && isset( $params["controllerMethod"] ) ){
+              $controller = new $params["controller"]( @$params["controllePassin"] );
+
+              if( method_exists( $controller, $params["controllerMethod"] ) ){
+                $data = $controller->{$params["controllerMethod"]}( @$params["controllerMethod"] );
+              }
+              else {
+                throw new Exception('Counld not find Method: {$params["controller"]}::{$params["controllerMethod"]}' );
+              }
+
+            }
+
             require "{$params["path"]}{$tag}.php";
             $string = ob_get_clean();
             $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $string ), $this->guacamole->template->getTemplate() ) );
@@ -139,6 +152,7 @@ class Tag
       if( !empty( $this->tags )  ){
 
           $tags = $this->getTags();
+
           foreach( $tags as $tk => $tv ){
               $this->proccessTag( $tk, $tv );
           }
