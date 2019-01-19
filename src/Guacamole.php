@@ -25,7 +25,7 @@ class Guacamole
      * [__construct description]
      * @param array $config config settings for Guacamole;
      */
-    public function __construct($config = array())
+    public function __construct( $config = array() )
     {
         $this->setConfig($config);
         $this->tag = isset($this->tag) ? : new Tag($this);
@@ -36,7 +36,7 @@ class Guacamole
      * config setter
      * @param array $config array of config options
      */
-    public function setConfig($config)
+    public function setConfig( $config )
     {
         $this->config = $config;
     }
@@ -61,7 +61,7 @@ class Guacamole
      * @param  array $params           optional array of parameters to pass through with the template
      * @return string                  return the template string after render and processs
      */
-    public function render($templateString, $params = null)
+    public function render( $templateString, $params = null )
     {
         if (is_array($params) && !empty($params)) {
             if (isset($params["tags"])) {

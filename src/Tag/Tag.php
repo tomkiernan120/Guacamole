@@ -22,7 +22,7 @@ class Tag
   /**
    * summary
    */
-  public function __construct($Guacamole)
+  public function __construct( $Guacamole )
   {
     $this->guacamole = $Guacamole;
   }
@@ -32,19 +32,19 @@ class Tag
    * @param string $tag    [description]
    * @param [type] $params [description]
    */
-  public function setTag($tag, $params = null)
+  public function setTag( $tag, $params = null )
   {
     $this->tags[strtolower($tag)] = $params;
   }
 
 
   /**
-   * set the tags propery ( used to make parts of the template )
-   * @param array $tags array of tags array( string "key" => mixed params );
-   * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
-   * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
-   */
-  public function setTags($tags)
+  * set the tags propery ( used to make parts of the template )
+  * @param array $tags array of tags array( string "key" => mixed params );
+  * @example  Guacamole\Guacamole::setTags( array( "customTags" => "test" ) );
+  * @example  Guacamole\Guacamole::setTags( array( "customTags" => function() { return "test"; } ) );
+  */
+  public function setTags( $tags )
   {
     if (is_array($tags) && !empty($tags)) {
       foreach ($tags as $tk => $tv) {
@@ -58,7 +58,7 @@ class Tag
    * @param string $tag    is string for custom tag
    * @param string/array $params optional string/array/object/closure
    */
-  public function addTag($tag, $params = null)
+  public function addTag( $tag, $params = null )
   {
     $this->setTag($tag, $params);
   }
@@ -77,7 +77,7 @@ class Tag
    * @param  string $tag [description]
    * @return [type]      [description]
    */
-  public function getTag($tag)
+  public function getTag( $tag )
   {
     return $this->tags[$tag];
   }
@@ -88,7 +88,7 @@ class Tag
    * @param  [type] $template [description]
    * @return [type]           [description]
    */
-  public function tagExists($tag, $template = null)
+  public function tagExists( $tag, $template = null )
   {
     if (!$template && $this->guacamole->template->getTemplate()) {
       $template = $this->guacamole->template->getTemplate();
@@ -132,7 +132,25 @@ class Tag
             throw new \Exception("Counld not find Method: {$params["controller"]}::{$params["controllerMethod"]}");
           }
 
-        }
+          if( isset( $params["path"] ) && Util::fileExists( $params["path"].$tag ) ) {
+            ob_start();
+
+            if( isset( $params["controller"] ) && class_exists( $params["controller"] ) && isset( $params["controllerMethod"] ) ){
+              $controller = new $params["controller"]( @$params["controllePassin"] );
+
+              if( method_exists( $controller, $params["controllerMethod"] ) ){
+                $data = $controller->{$params["controllerMethod"]}( @$params["controllerMethod"] );
+              }
+              else {
+                throw new Exception('Counld not find Method: {$params["controller"]}::{$params["controllerMethod"]}' );
+              }
+
+            }
+
+            require "{$params["path"]}{$tag}.php";
+            $string = ob_get_clean();
+            $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $string ), $this->guacamole->template->getTemplate() ) );
+          }        
 
         require "{$params["path"]}{$tag}.php";
         $string = ob_get_clean();
@@ -148,25 +166,26 @@ class Tag
    * @return [type] [description]
    */
   public function process()
-  {
-    if (!empty($this->tags)) {
+  {   
+      if( !empty( $this->tags )  ){
 
-      $tags = $this->getTags();
+          $tags = $this->getTags();
 
-      foreach ($tags as $tk => $tv) {
-        $this->proccessTag($tk, $tv);
+          foreach( $tags as $tk => $tv ){
+              $this->proccessTag( $tk, $tv );
+          }
       }
     }
   }
 
-  public function processString($string)
+  public function processString( $string )
   {
     if (Util::isString($string)) {
       $this->guacamole->template->setTemplate(str_ireplace("<{$tag}>", trim($params), $this->guacamole->template->getTemplate()));
     }
   }
 
-  public function processArray($array)
+  public function processArray( $array )
   {
     $data = array();
     $returnData = array();

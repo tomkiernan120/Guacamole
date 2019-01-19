@@ -21,7 +21,7 @@ class Util
      * @param  string $ext  optional extension does assume file is php
      * @return bool       [description]
      */
-    public static function fileExists($path, $ext = "php")
+    public static function fileExists( $path,  $ext = "php" )
     {
         return (bool)file_exists($path . "." . $ext);
     }
@@ -32,7 +32,7 @@ class Util
      * @param  string $ext  optional extension does assume file is php
      * @return mixed        returns files contents or false if file not found;
      */
-    public static function getFileContents($path, $ext = "php")
+    public static function getFileContents( $path, $ext = "php" )
     {
         if (self::fileExists($path, $ext)) {
             return file_get_contents("{$path}.{$ext}");
@@ -45,7 +45,7 @@ class Util
      * @param  mixed  $variable  mixed variable to check
      * @return boolean           returns boolean
      */
-    public static function isString($variable)
+    public static function isString( $variable )
     {
         return (bool)is_string($variable);
     }
@@ -55,7 +55,7 @@ class Util
      * @param  miaxed  $variable  mixed variable to check
      * @return boolean            returns boolean
      */
-    public static function isArray($variable)
+    public static function isArray( $variable )
     {
         return (bool)is_array($variable);
     }
@@ -67,7 +67,7 @@ class Util
      * @return string            if fount returns string path to file else return false
      * @example Util::findFile( 'Tag.php' ); //output './Tag/Tag.php'
      */
-    public static function findFile($file, $directory = ".")
+    public static function findFile( $file, $directory = "." )
     {
         $files = scandir($directory);
 
