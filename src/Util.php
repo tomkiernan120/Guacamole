@@ -12,7 +12,7 @@ class Util
      */
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -21,9 +21,9 @@ class Util
      * @param  string $ext  optional extension does assume file is php
      * @return bool       [description]
      */
-    public static function fileExists( string $path,  string $ext = "php" ) : bool
+    public static function fileExists($path, $ext = "php")
     {
-      return (bool)file_exists( $path . "." . $ext );
+        return (bool)file_exists($path . "." . $ext);
     }
 
     /**
@@ -32,10 +32,10 @@ class Util
      * @param  string $ext  optional extension does assume file is php
      * @return mixed        returns files contents or false if file not found;
      */
-    public static function getFileContents( string $path, string $ext = "php" )
+    public static function getFileContents($path, $ext = "php")
     {
-        if( self::fileExists( $path, $ext ) ){
-            return file_get_contents( "{$path}.{$ext}" ); 
+        if (self::fileExists($path, $ext)) {
+            return file_get_contents("{$path}.{$ext}");
         }
         return false;
     }
@@ -45,9 +45,9 @@ class Util
      * @param  mixed  $variable  mixed variable to check
      * @return boolean           returns boolean
      */
-    public static function isString( $variable ) :bool
+    public static function isString($variable)
     {
-        return (bool)is_string( $variable );
+        return (bool)is_string($variable);
     }
 
     /**
@@ -55,9 +55,9 @@ class Util
      * @param  miaxed  $variable  mixed variable to check
      * @return boolean            returns boolean
      */
-    public static function isArray( $variable ) :bool
+    public static function isArray($variable)
     {
-        return (bool)is_array( $variable );
+        return (bool)is_array($variable);
     }
 
     /**
@@ -67,20 +67,19 @@ class Util
      * @return string            if fount returns string path to file else return false
      * @example Util::findFile( 'Tag.php' ); //output './Tag/Tag.php'
      */
-    public static function findFile( string $file, $directory = "." )
+    public static function findFile($file, $directory = ".")
     {
-        $files = scandir( $directory );
+        $files = scandir($directory);
 
-        foreach( $files as $key => $value ){
-            $path = realpath( $directory.DIRECTORY_SEPARATOR.$value );
+        foreach ($files as $key => $value) {
+            $path = realpath($directory . DIRECTORY_SEPARATOR . $value);
 
-            if( !is_dir( $path ) ){
-                if( $file == $value ){
+            if (!is_dir($path)) {
+                if ($file == $value) {
                     return $path;
                 }
-            } 
-            else if( $value != "." && $value != ".." ){
-                self::findFile( $file, $path );
+            } else if ($value != "." && $value != "..") {
+                self::findFile($file, $path);
             }
         }
         return false;

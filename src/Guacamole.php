@@ -25,18 +25,18 @@ class Guacamole
      * [__construct description]
      * @param array $config config settings for Guacamole;
      */
-    public function __construct( array $config = array() )
+    public function __construct($config = array())
     {
-        $this->setConfig( $config );
-        $this->tag = isset( $this->tag ) ?: new Tag( $this );
-        $this->template = isset( $this->template ) ?: new Template( $this );
+        $this->setConfig($config);
+        $this->tag = isset($this->tag) ? : new Tag($this);
+        $this->template = isset($this->template) ? : new Template($this);
     }
 
     /**
      * config setter
      * @param array $config array of config options
      */
-    public function setConfig( array $config ) :void
+    public function setConfig($config)
     {
         $this->config = $config;
     }
@@ -46,12 +46,11 @@ class Guacamole
      * @param  mixed $name Optional name parameter can be used to return one config setting
      * @return mixed       returns whole config array or singular config option
      */
-    public function getConfig( $name = null )
+    public function getConfig($name = null)
     {
-        if( !$name ){
+        if (!$name) {
             return $this->config;
-        }
-        else if( is_string( $name ) ){
+        } else if (is_string($name)) {
             return $this->config[$name];
         }
     }
@@ -62,23 +61,22 @@ class Guacamole
      * @param  array $params           optional array of parameters to pass through with the template
      * @return string                  return the template string after render and processs
      */
-    public function render( string $templateString, $params = null ) :string
+    public function render($templateString, $params = null)
     {
-        if( is_array( $params ) && !empty( $params ) ){
-            if( isset( $params["tags"] ) ){
-                $this->tag->setTags( $params["tags"] );
+        if (is_array($params) && !empty($params)) {
+            if (isset($params["tags"])) {
+                $this->tag->setTags($params["tags"]);
             }
         }
 
-        if( Util::fileExists( $templateString ) ){
-            
+        if (Util::fileExists($templateString)) {
+
             ob_start();
             require $templateString . ".php";
             $templateString = ob_get_clean();
-            $this->template->setTemplate( $templateString );
-        }
-        else {
-            $this->template->setTemplate( $templateString );
+            $this->template->setTemplate($templateString);
+        } else {
+            $this->template->setTemplate($templateString);
         }
 
         $this->tag->process();
