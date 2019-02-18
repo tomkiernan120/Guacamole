@@ -4,64 +4,112 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "554997b79c00703f4ae441eb4f2d7c97",
+    "content-hash": "5321b2890d122708c7cf3fc2f071509f",
     "packages": [
         {
-            "name": "ezyang/htmlpurifier",
-            "version": "v4.10.0",
+            "name": "paquettg/php-html-parser",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d85d39da4576a6934b72480be6978fb10c860021"
+                "url": "https://github.com/paquettg/php-html-parser.git",
+                "reference": "96634727ec973ee0a57c5060139bfd747f079b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d85d39da4576a6934b72480be6978fb10c860021",
-                "reference": "d85d39da4576a6934b72480be6978fb10c860021",
+                "url": "https://api.github.com/repos/paquettg/php-html-parser/zipball/96634727ec973ee0a57c5060139bfd747f079b67",
+                "reference": "96634727ec973ee0a57c5060139bfd747f079b67",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2"
+                "paquettg/string-encode": "~0.1.0",
+                "php": ">=5.6"
             },
             "require-dev": {
-                "simpletest/simpletest": "^1.1"
+                "mockery/mockery": "~0.9.0",
+                "phpunit/phpunit": "~5.3.0",
+                "satooshi/php-coveralls": "~1.0.0"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
-                "files": [
-                    "library/HTMLPurifier.composer.php"
-                ]
+                    "PHPHtmlParser": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Edward Z. Yang",
-                    "email": "admin@htmlpurifier.org",
-                    "homepage": "http://ezyang.com"
+                    "name": "Gilles Paquette",
+                    "email": "paquettg@gmail.com",
+                    "homepage": "http://gillespaquette.ca"
                 }
             ],
-            "description": "Standards compliant HTML filter written in PHP",
-            "homepage": "http://htmlpurifier.org/",
+            "description": "An HTML DOM parser. It allows you to manipulate HTML. Find tags on an HTML page with selectors just like jQuery.",
+            "homepage": "https://github.com/paquettg/php-html-parser",
             "keywords": [
-                "html"
+                "dom",
+                "html",
+                "parser"
             ],
-            "time": "2018-02-23T01:58:20+00:00"
+            "time": "2016-04-06T16:42:15+00:00"
+        },
+        {
+            "name": "paquettg/string-encode",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paquettg/string-encoder.git",
+                "reference": "cf08343649701979f581c1601d01247fa3782439"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paquettg/string-encoder/zipball/cf08343649701979f581c1601d01247fa3782439",
+                "reference": "cf08343649701979f581c1601d01247fa3782439",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "stringEncode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gilles Paquette",
+                    "email": "paquettg@gmail.com",
+                    "homepage": "http://gillespaquette.ca"
+                }
+            ],
+            "description": "Facilitating the process of altering string encoding in PHP.",
+            "homepage": "https://github.com/paquettg/string-encoder",
+            "keywords": [
+                "charset",
+                "encoding",
+                "string"
+            ],
+            "time": "2014-05-29T18:38:09+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "paquettg/php-html-parser": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "php": ">=5.3.0"
-    },
+    "platform": [],
     "platform-dev": []
 }

@@ -1,5 +1,8 @@
 
 # Created by https://www.gitignore.io/api/test,composer,phpcodesniffer
+.
+.phpintel/
+.phpintel
 
 ### Composer ###
 composer.phar
@@ -94,9 +97,7 @@ composer.phar
 *tmpfile
 *tmpfiles
 *lol
-.phpintel/*
-/tester/
+test/
 
 # End of https://www.gitignore.io/api/test,composer,phpcodesniffer
-
-tester/
+.phpintel/

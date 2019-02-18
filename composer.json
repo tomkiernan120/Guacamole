@@ -1,6 +1,6 @@
 {
-    "name": "tom.kiernan/salsa",
-    "description": "PHP Router",
+    "name": "tom.kiernan/guacamole",
+    "description": "PHP Templating Engine",
     "type": "library",
     "authors": [
         {
@@ -8,20 +8,13 @@
             "email": "tkiernan120@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Guacamole\\" : "src/"
+        }
+    },
+    "minimum-stability": "dev",
     "require": {
-      "php": ">=5.3.0",
-        "ezyang/htmlpurifier": "^4.10"
-   },
-   "require-dev": {
-   },
-   "autoload": {
-      "psr-4": {
-         "Salsa\\": "src/"
-      }
-   },
-   "autoload-dev": {
-      "psr-4": {
-         "Salsa\\": "tests/"
-      }
-   }
+        "paquettg/php-html-parser": "dev-master"
+    }
 }
