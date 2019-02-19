@@ -1,7 +1,4 @@
-[19-Feb-2019 14:17:00 Europe/London] PHP Fatal error:  Class 'Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:17:08 Europe/London] PHP Fatal error:  Class 'Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:17:16 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:17:27 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:18:14 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:18:33 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
-[19-Feb-2019 14:18:53 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 16:54:03 Europe/London] PHP Warning:  class_exists() expects parameter 1 to be string, object given in /websites/active/_tom/Guacamole/src/Tag/Tag.php on line 213
+[19-Feb-2019 16:54:03 Europe/London] PHP Warning:  class_exists() expects parameter 1 to be string, object given in /websites/active/_tom/Guacamole/src/Tag/Tag.php on line 131
+[19-Feb-2019 16:58:15 Europe/London] PHP Parse error:  syntax error, unexpected ')' in /websites/active/_tom/Guacamole/src/Tag/Tag.php on line 209
+[19-Feb-2019 16:58:51 Europe/London] PHP Warning:  class_exists() expects parameter 1 to be string, object given in /websites/active/_tom/Guacamole/src/Tag/Tag.php on line 131

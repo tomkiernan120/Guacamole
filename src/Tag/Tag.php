@@ -16,7 +16,7 @@ class Tag
 {
 
 
-  public $tags = array();
+  public $tags = [];
   public $guacamole;
 
   /**
@@ -108,19 +108,24 @@ class Tag
 
     $params = Clean::clean($params);
 
-    $data = array();
+    $data = [];
 
     if ($this->tagExists($tag)) {
 
       if (Util::isString($params)) {
-        $data = $this->processString($params);
+        $this->processString( $tag, $params );
       }
 
       if (is_array($params) && !empty($params)) {
         $data = $this->processArray($params);
       }
 
-      if (isset($params["path"]) && Util::fileExists($params["path"] . $tag)) {
+      if( is_object( $params ) && is_callable( $params ) ) {
+        ob_start();
+        $string = call_user_func_array( $params, [] );
+        $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $string ), $this->guacamole->template->getTemplate() ) );        
+      }
+      else if (isset($params["path"]) && Util::fileExists($params["path"] . $tag)) {
         ob_start();
 
         if (isset($params["controller"]) && class_exists($params["controller"]) && isset($params["controllerMethod"])) {
@@ -129,7 +134,7 @@ class Tag
           if (method_exists($controller, $params["controllerMethod"])) {
             $data = $controller->{$params["controllerMethod"]}(@$params["controllerPassin"]);
           } else {
-            throw new \Exception("Counld not find Method: {$params["controller"]}::{$params["controllerMethod"]}");
+            throw new \Exception("Could not find Method: {$params["controller"]}::{$params["controllerMethod"]}");
           }
 
           if( isset( $params["path"] ) && Util::fileExists( $params["path"].$tag ) ) {
@@ -144,19 +149,19 @@ class Tag
               else {
                 throw new Exception('Counld not find Method: {$params["controller"]}::{$params["controllerMethod"]}' );
               }
-
             }
 
             require "{$params["path"]}{$tag}.php";
             $string = ob_get_clean();
             $this->guacamole->template->setTemplate( str_ireplace( "<{$tag}>", trim( $string ), $this->guacamole->template->getTemplate() ) );
-          }        
+          }
+
+        }
 
         require "{$params["path"]}{$tag}.php";
         $string = ob_get_clean();
         $this->guacamole->template->setTemplate(str_ireplace("<{$tag}>", trim($string), $this->guacamole->template->getTemplate()));
       }
-
     }
   }
 
@@ -167,46 +172,56 @@ class Tag
    */
   public function process()
   {   
-      if( !empty( $this->tags )  ){
+    if( !empty( $this->tags )  ){
 
-          $tags = $this->getTags();
+      $tags = $this->getTags();
 
-          foreach( $tags as $tk => $tv ){
-              $this->proccessTag( $tk, $tv );
-          }
+      for( $i = 0; $i < 3; $i++ ){
+        foreach( $tags as $tk => $tv ){
+          $this->proccessTag( $tk, $tv );
+        }
       }
+
     }
   }
 
-  public function processString( $string )
+
+
+  public function processString( $tag, $string )
   {
     if (Util::isString($string)) {
-      $this->guacamole->template->setTemplate(str_ireplace("<{$tag}>", trim($params), $this->guacamole->template->getTemplate()));
+      $this->guacamole->template->setTemplate(str_ireplace("<{$tag}>", trim($string), $this->guacamole->template->getTemplate()));
+      return true;
     }
+    return false;
   }
 
   public function processArray( $array )
   {
-    $data = array();
-    $returnData = array();
+    $data = [];
+    $returnData = [];
 
     if (is_array($array) && !empty($array)) {
 
       if (isset($array["function"]) && is_callable($array["function"])) {
-        $parameters = ((isset($array["parameters"]) && is_array($array["parameters"])) ? $array["parameters"] : array());
+        $parameters = ((isset($array["parameters"]) && is_array($array["parameters"])) ? $array["parameters"] : [] );
         $data = call_user_func_array($array["function"], $parameters);
-        $returnData = array_merge($returnData, is_array($data) ? $data : array($data));
+        $returnData = array_merge( $returnData, is_array( $data ) ? $data : [$data] );
       }
 
       if (isset($array["controller"]) && isset($array["method"])) {
-        if (class_exists($array["controller"])) {
-          $controllerText = $array["controller"];
-          $controller = new $controllerText(@$array["controllerPassin"]);
 
-          if (method_exists($controller, $array["method"])) {
-            $data = $controller->{$array["method"]}(@$array["passin"]);
-            $returnData = array_merge($returnData, is_array($data) ? $data : array($data));
-          }
+        if( is_string( $array["controller"] ) && class_exists( $array["controller"] ) ) {
+          $controlerText = $array["controller"];
+          $controller = new $controllerText( @$array["controllerPassin"] );
+        }
+        else if( is_object( $array["controller"] ) && is_callable( $array["controller"] ) ){
+          $controller = $array["controller"];
+        }
+
+        if (method_exists($controller, $array["method"])) {
+          $data = $controller->{$array["method"]}(@$array["passin"]);
+          $returnData = array_merge($returnData, is_array($data) ? $data : [$data] );
         }
       }
     }

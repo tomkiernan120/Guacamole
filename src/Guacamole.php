@@ -25,7 +25,7 @@ class Guacamole
      * [__construct description]
      * @param array $config config settings for Guacamole;
      */
-    public function __construct( $config = array() )
+    public function __construct( $config = [] )
     {
         $this->setConfig($config);
         $this->tag = isset($this->tag) ? : new Tag($this);
@@ -54,7 +54,7 @@ class Guacamole
             return $this->config[$name];
         }
     }
-
+    
     /**
      * Render a template
      * @param  string $templateString  A template string to render
@@ -75,7 +75,8 @@ class Guacamole
             require $templateString . ".php";
             $templateString = ob_get_clean();
             $this->template->setTemplate($templateString);
-        } else {
+        } 
+        else {
             $this->template->setTemplate($templateString);
         }
 
