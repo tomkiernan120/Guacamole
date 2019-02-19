@@ -1,0 +1,7 @@
+[19-Feb-2019 14:17:00 Europe/London] PHP Fatal error:  Class 'Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:17:08 Europe/London] PHP Fatal error:  Class 'Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:17:16 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:17:27 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:18:14 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:18:33 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
+[19-Feb-2019 14:18:53 Europe/London] PHP Fatal error:  Class 'Guacamole\Guacamole' not found in /websites/active/_tom/Guacamole/example/index.php on line 7
